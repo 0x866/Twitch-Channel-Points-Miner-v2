@@ -1,27 +1,21 @@
 FROM python:3.12-slim-trixie
 
-ARG BUILDX_QEMU_ENV
-
 WORKDIR /usr/src/app
 
-COPY requirements.txt ./
-COPY run.py ./
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
 
-ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-
-RUN python -m pip install --upgrade pip
+COPY requirements.txt .
 
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    && apt-get install -y --no-install-recommends \
         gcc \
         g++ \
         libffi-dev \
-        rustc \
-        zlib1g-dev \
         libjpeg-dev \
         libssl-dev \
+        zlib1g-dev \
         libblas-dev \
         liblapack-dev \
         make \
@@ -29,17 +23,17 @@ RUN apt-get update \
         automake \
         ninja-build \
         subversion \
-        python3-dev \
-    && if [ "${BUILDX_QEMU_ENV}" = "true" ] && [ "$(getconf LONG_BIT)" = "32" ]; then \
-        python -m pip install -U cryptography==3.3.2; \
-    fi \
-    && python -m pip install --no-cache-dir -r requirements.txt \
-    && apt-get remove -y gcc g++ rustc \
+        rustc \
+    && pip install --upgrade pip \
+    && pip install -r requirements.txt \
+    && apt-get purge -y \
+        gcc \
+        g++ \
+        rustc \
     && apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /usr/share/doc/*
+    && rm -rf /var/lib/apt/lists/*
 
-ADD TwitchChannelPointsMiner ./TwitchChannelPointsMiner
+COPY run.py .
+COPY TwitchChannelPointsMiner ./TwitchChannelPointsMiner
 
 ENTRYPOINT ["python", "run.py"]
