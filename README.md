@@ -26,6 +26,15 @@ console.log(JSON.parse(decoded).id); // persistent (twitch acc id)
 
 <h3 align="center">https://github.com/0x866/Twitch-Channel-Points-Miner-v2/tree/main</h3>
 
+### Измененные файлы:
+- `TwitchChannelPointsMiner/classes/TwitchLogin.py`
+- `TwitchChannelPointsMiner/classes/Twitch.py`
+- `TwitchChannelPointsMiner/classes/entities/Streamer.py` (функцию `__repr__`)
+- `run.py`
+- `Dockerfile`
+- `requirements.txt`
+
+
 **Credits**
 - Main idea: https://github.com/gottagofaster236/Twitch-Channel-Points-Miner
 - ~~Bet system (Selenium): https://github.com/ClementRoyer/TwitchAutoCollect-AutoBet~~
