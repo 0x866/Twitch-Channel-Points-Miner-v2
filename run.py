@@ -23,7 +23,9 @@ def str_to_attr(str_array: list) -> list:
     return [getattr(Events, ev) for ev in str_array if hasattr(Events, ev)]
 
 login_acc = os.getenv("LOGIN")
-password_acc = os.getenv("PASSWORD")
+password_acc = os.getenv("PASSWORD", "")
+
+if password_acc == "": password_acc = None
 
 streamers_array = os.getenv("STREAMERS").split(',')
 
