@@ -119,7 +119,7 @@ class TwitchLogin(object):
                 expires_at = now + \
                     timedelta(seconds=login_response_json["expires_in"])
                 logger.info(
-                    "Open https://www.twitch.tv/activate"
+                    f"Open https://www.twitch.tv/activate?device-code={user_code}"
                 )
                 logger.info(
                     f"and enter this code: {user_code}"
